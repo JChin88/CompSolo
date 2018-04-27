@@ -7,7 +7,6 @@ import javax.sound.midi.SysexMessage;
 import javax.sound.midi.Track;
 import java.io.File;
 import java.util.LinkedList;
-import java.util.Random;
 
 public class RhythmGenerator {
     // beats[0]: Freddy Green
@@ -85,20 +84,12 @@ public class RhythmGenerator {
      * @return a 2D array with two rows; the first row is the rhythm pattern of the measure, and the second row is the beat length
      */
     public static int[][] generateRhythm(int[] prevMeasure, int[] measure, int[] nextMeasure) {
-        //randomly generate a number to determine if the beat should be long or short
-        Random rand = new Random();
-        int randInt = rand.nextInt(1);
-
         int[][] rhythm = new int[2][8];
         boolean emptySpace = false;
         int emptyLength = 0;
         int firstChord = 0;
         for (int i = 0; i < measure.length; i++) {
             if (measure[i] == 0) {
-                if (rand.nextInt(3) == 0) {
-                    rhythm[0][(i / (measure.length / 8)) - 1] = 1;
-                    rhythm[1][(i / (measure.length / 8)) - 1] = 8;
-                }
                 emptySpace = true;
                 emptyLength++;
             } else if (emptySpace) {
@@ -112,11 +103,7 @@ public class RhythmGenerator {
             }
         }
         rhythm[0][0] = 1;
-        if (randInt == 0) {
             rhythm[1][0] = firstChord < 2 ? 8 : 4;
-        } else {
-            rhythm[1][0] = 8;
-        }
         return rhythm;
     }
 
